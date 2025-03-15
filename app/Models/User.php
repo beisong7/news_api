@@ -62,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function categories()
     {
-        return $this->belongsToMany(Category::class)
+        return $this->belongsToMany(Category::class, 'user_categories')
             ->withPivot('preference_type')
             ->withTimestamps();
     }
@@ -72,7 +72,9 @@ class User extends Authenticatable implements JWTSubject
      */
     public function preferredCategories()
     {
-        return $this->belongsToMany(Category::class)
+        // return $this->hasManyThrough(Category::class, UserCategory::class, "category_id", "id", "", "")
+        // ->where("preference_type", "=", "preferred");
+        return $this->belongsToMany(Category::class, 'user_categories')
             ->wherePivot('preference_type', 'preferred')
             ->withTimestamps();
     }
@@ -82,7 +84,9 @@ class User extends Authenticatable implements JWTSubject
      */
     public function excludedCategories()
     {
-        return $this->belongsToMany(Category::class)
+        // return $this->hasManyThrough(Category::class, UserCategory::class, "category_id", "id", "", "")
+        // ->where("preference_type", "=", "excluded");
+        return $this->belongsToMany(Category::class, 'user_categories')
             ->wherePivot('preference_type', 'excluded')
             ->withTimestamps();
     }

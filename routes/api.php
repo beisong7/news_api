@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\NewsArticleController;
+use App\Http\Controllers\API\UserPreferenceController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\SyncController;
 use App\Http\Controllers\UserController;
@@ -32,10 +34,15 @@ Route::middleware('auth:api')->group(function () {
     Route::get('profile', [UserController::class, 'profile']);
 
     Route::prefix('news')->group(function () {
-
         Route::get('/search', [NewsArticleController::class, 'search']);
-        Route::get('/recommended', [NewsArticleController::class, 'getRecommended'])->middleware('auth:api');
+        Route::get('/category', [CategoryController::class, 'index']);
+        Route::get('/recommended', [NewsArticleController::class, 'getRecommended']);
         Route::get('/{news}', [NewsArticleController::class, 'show']);
+    });
+
+    Route::prefix('preferences')->group(function () {
+        Route::get('/', [UserPreferenceController::class, 'getPreferences']);
+        Route::post('/', [UserPreferenceController::class, 'updatePreferences']);
     });
 });
 

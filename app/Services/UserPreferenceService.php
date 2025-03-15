@@ -17,7 +17,10 @@ class UserPreferenceService
     public function getRecommendedArticles(int $userId): LengthAwarePaginator
     {
         // Get user with relationships
+
         $user = User::with(['preferredCategories', 'excludedCategories'])->find($userId);
+
+        // dd($user->toArray());
 
         // If user not found, return latest news
         if (!$user) {

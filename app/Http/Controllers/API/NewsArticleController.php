@@ -66,8 +66,8 @@ class NewsArticleController extends Controller
      */
     public function getRecommended(Request $request)
     {
-        $userId = auth()->id();
-        $articles = $this->userPreferenceService->getRecommendedArticles($userId);
+        $user = $request->user('api');
+        $articles = $this->userPreferenceService->getRecommendedArticles($user->id);
 
         return NewsResource::collection($articles);
     }

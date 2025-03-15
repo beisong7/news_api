@@ -53,6 +53,7 @@ class UserPreferenceController extends Controller
         $preferredCategories = $validated['preferred_categories'] ?? [];
         $excludedCategories = $validated['excluded_categories'] ?? [];
 
+
         // Check for conflicts (categories can't be both preferred and excluded)
         $conflicts = array_intersect($preferredCategories, $excludedCategories);
         if (!empty($conflicts)) {
@@ -62,8 +63,9 @@ class UserPreferenceController extends Controller
             ], 422);
         }
 
+        $user = $request->user('api');
         $result = $this->userPreferenceService->saveUserCategoryPreferences(
-            auth()->id(),
+            $user->id,
             $preferredCategories,
             $excludedCategories
         );
